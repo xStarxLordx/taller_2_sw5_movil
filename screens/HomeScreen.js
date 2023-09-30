@@ -13,10 +13,11 @@ const HomeScreen = () => {
   const series = [libre, gastos];
   const sliceColor = ["#4CAF50", "#FF9800"];
   
-  const handleEntry = async () => {
+  const handleEntry = () => {
     
     try {
       setIngresos(inputIngresos)
+
       setTotal(inputIngresos)
       
       setLibre(total)
@@ -28,12 +29,12 @@ const HomeScreen = () => {
       alert("Error");
     } 
   };
-  const handleSpent = async () => {
+  const handleSpent =  () => {
     
     try {
-      setGastos((inputGastos+gastos))
-      total(total-gastos)
-      setLibre(total)
+      setGastos((inputGastos))
+      setTotal(total-gastos)
+      setLibre(total-gastos)
       
       alert("Registro exitoso.");
       
