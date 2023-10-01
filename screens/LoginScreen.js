@@ -41,7 +41,10 @@ const LoginScreen = () => {
       console.log(error);
       alert("Correo o contraseña incorrectos.");
     } finally {
+      
       setLoading(false);
+      await setEmail("");
+      await setPassword("");
     }
   };
   const handleSignUp = async () => {
@@ -68,6 +71,8 @@ const LoginScreen = () => {
       alert("Correo o contraseña incorrectos.");
     } finally {
       setLoading(false);
+      await setEmail("");
+      await setPassword("");
     }
   };
 
