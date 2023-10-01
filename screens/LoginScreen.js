@@ -15,6 +15,7 @@ import { FIREBASE_AUTH } from "../firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendEmailVerification, getAuth, User
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 const LoginScreen = () => {
@@ -23,12 +24,19 @@ const LoginScreen = () => {
   const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
   const navigation = useNavigation();
+  
   const handleSignIn = async () => {
     setLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
       console.log(response);
-      navigation.navigate("Home");
+      console.warn(auth.currentUser.emailVerified)
+      if(auth.currentUser.emailVerified==true){
+        navigation.navigate("Home");
+      }
+      else{
+        alert("Por favor verifica el correo.")
+      }
     } catch (error) {
       console.log(error);
       alert("Correo o contraseña incorrectos.");
@@ -38,15 +46,23 @@ const LoginScreen = () => {
   };
   const handleSignUp = async () => {
     setLoading(true);
+    
     try {
       const response = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
+      sendEmailVerification(auth.currentUser)
+      .then(() => {
+        // Email verification sent!
+        // ...
+        alert("Correo de verificación enviado, por favor verifica el correo para poder iniciar sesión.");
+      });
+      console.warn(auth.currentUser.emailVerified)
       console.log(response);
-      alert("Registro exitoso.");
-      navigation.navigate("Home");
+      
+      /* navigation.navigate("Home"); */
     } catch (error) {
       console.log(error);
       alert("Correo o contraseña incorrectos.");
@@ -56,42 +72,46 @@ const LoginScreen = () => {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
-      <KeyboardAvoidingView style={styles.container}>
-        <Text
-          style={[styles.title, { marginTop: 70 }, { alignSelf: "center" }]}
-        >
-          FinanzasApp
-        </Text>
-        <Image source={Logo} style={[styles.logo]} resizeMode="contain" />
-        <View style={styles.inpuContainer}>
-          <TextInput
-            placeholder="Correo electrónico"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Contraseña"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            style={styles.input}
-            secureTextEntry
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={handleSignIn} style={styles.button}>
-            <Text style={styles.buttonText}> Iniciar sesión </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleSignUp}
-            style={[styles.button, styles.buttonOutline]}
+    <SafeAreaView style={styles.container}>
+      <ScrollView >
+        
+          <Text
+            style={[styles.title, { marginTop: 70 }, { alignSelf: "center" }]}
           >
-            <Text style={[styles.buttonOutlineText]}> Registrarse </Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </ScrollView>
+            FinanzasApp
+          </Text>
+          <Image source={Logo} style={[styles.logo]} resizeMode="contain" />
+          <KeyboardAvoidingView behavior="padding">
+          <View style={styles.inpuContainer}>
+            <TextInput
+              placeholder="Correo electrónico"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Contraseña"
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              style={styles.input}
+              secureTextEntry
+            />
+          </View>
+          
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={handleSignIn} style={styles.button}>
+              <Text style={styles.buttonText}> Iniciar sesión </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSignUp}
+              style={[styles.button, styles.buttonOutline]}
+            >
+              <Text style={[styles.buttonOutlineText]}> Registrarse </Text>
+            </TouchableOpacity>
+          </View>
+          </KeyboardAvoidingView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -99,13 +119,14 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
+    alignContent: "center",
 
     backgroundColor: "white",
     flex: 1,
   },
   inpuContainer: {
     width: "80%",
+    alignSelf:"center"
   },
   input: {
     backgroundColor: "white",
@@ -116,18 +137,19 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderRadius: 5,
     borderWidth: 2,
+    
   },
   buttonContainer: {
     width: "80%",
-    justifyContent: "center",
-    alignItems: "center",
+    alignSelf:"center"
   },
   button: {
     width: "65%",
     padding: 15,
+    alignSelf: "center",
     alignItems: "center",
     borderRadius: 15,
-    marginTop: 10,
+    marginTop: 15,
     backgroundColor: "#555555",
     borderColor: "black",
     borderWidth: 1,

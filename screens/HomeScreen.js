@@ -12,7 +12,7 @@ const HomeScreen = () => {
   const [inputGastos, setInputGastos] = useState("")
   const series = [libre, gastos];
   const sliceColor = ["#4CAF50", "#FF9800"];
-  
+  const [loading, setLoading] = useState(false);
   const handleEntry = () => {
     
     try {
@@ -30,7 +30,7 @@ const HomeScreen = () => {
     } 
   };
   const handleSpent =  () => {
-    
+    setLoading(true);
     try {
       setGastos((inputGastos))
       setTotal(total-gastos)
@@ -41,7 +41,9 @@ const HomeScreen = () => {
     } catch (error) {
       console.log(error);
       alert("Error");
-    } 
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
