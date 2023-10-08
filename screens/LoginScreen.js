@@ -7,10 +7,11 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
+import { useFonts } from "expo-font";
 import React, { useState } from "react";
 import { TextInput } from "react-native";
 import { TouchableOpacity } from "react-native";
-import Logo from "../assets/images/alcancia.png";
+import Logo from "../assets/images/alcancia-white.png";
 import { FIREBASE_AUTH } from "../firebase";
 import {
   createUserWithEmailAndPassword,
@@ -24,7 +25,10 @@ const LoginScreen = () => {
   const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
   const navigation = useNavigation();
-  
+  const [fontsLoaded] = useFonts({
+    volkor: require("../assets/fonts/Vollkorn/static/Vollkorn-Regular.ttf"),
+
+  })
   const handleSignIn = async () => {
     setLoading(true);
     try {
@@ -76,25 +80,30 @@ const LoginScreen = () => {
     }
   };
 
+  if(!fontsLoaded) return null;
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView >
-        
+          <View>
           <Text
-            style={[styles.title, { marginTop: 70 }, { alignSelf: "center" }]}
+            style={[styles.title, { marginTop: 55 }, { alignSelf: "center" },{color:"white"}]}
           >
             FinanzasApp
           </Text>
           <Image source={Logo} style={[styles.logo]} resizeMode="contain" />
+          </View>
           <KeyboardAvoidingView behavior="padding">
           <View style={styles.inpuContainer}>
             <TextInput
+            placeholderTextColor={"white"}
               placeholder="Correo electrónico"
               value={email}
               onChangeText={(text) => setEmail(text)}
               style={styles.input}
             />
             <TextInput
+              placeholderTextColor={"white"}
               placeholder="Contraseña"
               value={password}
               onChangeText={(text) => setPassword(text)}
@@ -125,8 +134,8 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     alignContent: "center",
-
-    backgroundColor: "white",
+    backgroundColor: "#323232",
+    
     flex: 1,
   },
   inpuContainer: {
@@ -134,7 +143,7 @@ const styles = StyleSheet.create({
     alignSelf:"center"
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: "grey",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
@@ -173,11 +182,12 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "700",
+    fontFamily: 'volkor',
   },
   title: {
     fontSize: 30,
-    fontWeight: "bold",
     color: "black",
+    fontFamily: 'volkor',
   },
   logo: {
     width: "60%",

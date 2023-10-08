@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, SafeAr
 import React, { Component, useState } from "react";
 import CurrencyInput from 'react-native-currency-input';
 import { PieChart } from "react-native-chart-kit";
+import { useFonts } from "expo-font/build/FontHooks";
 const HomeScreen = () => {
   const widthAndHeight = 250;
   const [ingresos, setIngresos] = useState("");
@@ -13,7 +14,10 @@ const HomeScreen = () => {
   const series = [disponible, gastos];
   const sliceColor = ["#4CAF50", "#FF9800"];
   const [loading, setLoading] = useState(false);
-  
+  const [fontsLoaded] = useFonts({
+    volkor: require("../assets/fonts/Vollkorn/static/Vollkorn-Regular.ttf"),
+
+  })
   function formatNumber(number){
     return new Intl.NumberFormat("ES-CO",  {
       style: "currency",
@@ -28,7 +32,7 @@ const HomeScreen = () => {
 
       setInputIngresos(Number(ingresos)+Number(inputIngresos))
       
-      setDisponible(Number(ingresos)+Number(inputIngresos)-Number(gastos))
+      setDisponible(Number(ingresos)+Number(disponible))
      
       alert("Registro exitoso.");
       
@@ -63,13 +67,13 @@ const HomeScreen = () => {
     <ScrollView >
       <View style={[{ alignItems: "center" }, { marginTop: 60 }]}>
         <Text
-          style={[{ color: "black" }, { fontWeight: "bold" }, { fontSize: 30 }, {textAlign:"center"}]}
+          style={[styles.title,{ color: "black" }, { fontSize: 30 }, {textAlign:"center"}, {color:"white"}]}
         >
-          Balance de gastos e ingresos
+          Balance general
         </Text>
-        <Text style={[{alignSelf:"flex-start"},{marginStart:10}, {fontWeight:"bold"}, {fontSize:20}, {marginTop:20}] } > Ingresos: {formatNumber(Number(inputIngresos))} </Text>
-        <Text style={[{alignSelf:"flex-start"},{marginStart:10}, {fontWeight:"bold"}, {fontSize:20}, {marginTop:20}] } > Disponible: <Text style={{color:"rgba(131, 167, 234, 1)"}} >{formatNumber(Number(disponible))} </Text></Text>
-        <Text style={[{alignSelf:"flex-start"},{marginStart:10}, {fontWeight:"bold"}, {fontSize:20}, {marginTop:20}] } > Gastos: <Text style={{color:"#F00"}}>{formatNumber(Number(gastosTotales))} </Text></Text>
+        <Text style={[{alignSelf:"flex-start"},{marginStart:10}, {fontWeight:"bold"}, {fontSize:20}, {marginTop:20}, {color:"white"}] } > Ingresos: {formatNumber(Number(inputIngresos))} </Text>
+        <Text style={[{alignSelf:"flex-start"},{marginStart:10}, {fontWeight:"bold"}, {fontSize:20}, {marginTop:20}, {color:"white"}] } > Disponible: <Text style={{color:"#57a639"}} >{formatNumber(Number(disponible))} </Text></Text>
+        <Text style={[{alignSelf:"flex-start"},{marginStart:10}, {fontWeight:"bold"}, {fontSize:20}, {marginTop:20}, {color:"white"}] } > Gastos: <Text style={{color:"#F00"}}>{formatNumber(Number(gastosTotales))} </Text></Text>
       </View>
       
       <View style={styles.container}>
@@ -80,7 +84,7 @@ const HomeScreen = () => {
             name: 'Disponible',
             value: disponible,
           
-            color: 'rgba(131, 167, 234, 1)',
+            color: '#57a639',
             legendFontColor: 'white',
             legendFontSize: 15,
           },
@@ -112,7 +116,7 @@ const HomeScreen = () => {
           backgroundColor: '#1cc910',
           backgroundGradientFrom: '#eff3ff',
           backgroundGradientTo: '#efefef',
-          decimalPlaces: 3,
+          decimalPlaces: 2,
           color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
           style: {
             borderRadius: 16,
@@ -124,14 +128,15 @@ const HomeScreen = () => {
         }}
         accessor="value"
         backgroundColor="grey"
-        paddingLeft="0"
+        paddingLeft="1"
          //For the absolute number else percentage
       />
         
       </View>
       <View style={[styles.inpuContainer, { alignSelf: "center" }]}>
-      <Text>Ingresos:</Text>
+      <Text style= {styles.textinput}>Ingresos:</Text>
         <TextInput
+        placeholderTextColor={"white"}
           keyboardType="number-pad"
           placeholder="Ingresos"
           name="ingresos"
@@ -144,10 +149,12 @@ const HomeScreen = () => {
         <TouchableOpacity onPress={handleEntry} style={styles.button}>
             <Text style={styles.buttonText}> Registrar ingresos </Text>
         </TouchableOpacity>
-        <Text>Gastos:</Text>
+        <Text style= {styles.textinput}>Gastos:</Text>
         <TextInput
-          placeholder="Gastos mensuales"
+          placeholderTextColor={"white"}
+          placeholder="Gastos"
           keyboardType="number-pad"
+          
           value={gastos}
           onChangeText={(text) => {
             setGastos(text)}
@@ -169,6 +176,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
+    backgroundColor: "#323232"
   },
   container: {
     flex: 1,
@@ -177,9 +185,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     margin: 10,
+    fontFamily: 'volkor',
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: "grey",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
@@ -187,13 +196,15 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderRadius: 5,
     borderWidth: 2,
+    
   },
   inpuContainer: {
     width: "80%",
   },
   text:{
     fontWeight:"bold",
-    fontSize: 20
+    fontSize: 20,
+    color:"white"
   },
   buttonText: {
     color: "white",
@@ -210,4 +221,7 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 1,
   },
+  textinput:{
+    color:"white"
+  }
 });
