@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "finanzasapp1.0.0",
-    "slug": "finanzasapp1.0.0",
+    "slug": "finanzasapp1",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.starxlord.finanzasapp1"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "cfcfe752-44c8-43ba-8e64-8cc12f79b695"
+      }
     }
   }
 }
