@@ -31,7 +31,7 @@ export default class LoginScreen extends Component{
                         margin: 100,
 
                     }}
-                    source={require("../assets/images/alcancia.png")}
+                    source={require("../assets/images/GYM1.png")}
                 />
             </View>
         )
@@ -44,6 +44,6 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor:"white"
+        backgroundColor:"black"
     }
 })

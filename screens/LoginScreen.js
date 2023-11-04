@@ -12,7 +12,7 @@ import { useFonts } from "expo-font";
 import React, { useState } from "react";
 import { TextInput } from "react-native";
 import { TouchableOpacity } from "react-native";
-import Logo from "../assets/images/alcancia-white.png";
+import Logo from "../assets/images/GYM1.png";
 import { FIREBASE_AUTH } from "../firebase";
 import {
   createUserWithEmailAndPassword,
@@ -93,7 +93,7 @@ const LoginScreen = () => {
           <Text
             style={[styles.title, { marginTop: 55 }, { alignSelf: "center" },{color:"white"}]}
           >
-            FinanzasApp
+            Best Gym
           </Text>
           <View >
           <Image source={Logo} style={[styles.logo,{height: height * 0.35,} ]} resizeMode="contain" />
@@ -121,7 +121,7 @@ const LoginScreen = () => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleSignUp}
-              style={[styles.button, styles.buttonOutline]}
+              style={[styles.buttonOutline]}
             >
               <Text style={[styles.buttonOutlineText]}> Registrarse </Text>
             </TouchableOpacity>
@@ -137,7 +137,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     alignContent: "center",
-    backgroundColor: "#323232",
+    backgroundColor: "black",
     flex: 1,
   },
   inpuContainer: {
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
-    borderColor: "black",
+    borderColor: "#610B21",
     borderRadius: 5,
     borderWidth: 2,
     
@@ -170,19 +170,23 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginTop: 15,
     backgroundColor: "#555555",
-    borderColor: "black",
-    borderWidth: 1,
+    borderColor: "#610B21",
+    borderWidth: 2,
   },
   buttonOutline: {
-    backgroundColor: "white",
-    marginTop: 10,
-    borderColor: "black",
-    borderWidth: 1,
+    backgroundColor: "#555555",
+    width: "65%",
+    padding: 15,
+    alignSelf: "center",
+    alignItems: "center",
     borderRadius: 15,
+    marginTop: 15,
+    borderColor: "#610B21",
+    borderWidth: 2,
   },
   buttonOutlineText: {
     fontWeight: "700",
-    color: "black",
+    color: "white",
   },
   buttonText: {
     color: "white",
