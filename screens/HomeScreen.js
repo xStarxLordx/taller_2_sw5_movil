@@ -8,11 +8,14 @@ import {
   SafeAreaView,
   Dimensions,
 } from "react-native";
-import React, { Component, useState } from "react";
+import React, { Component, useState, useEffect} from "react";
 import { useFonts } from "expo-font/build/FontHooks";
 import { SelectList } from "react-native-dropdown-select-list";
 import { KeyboardAvoidingView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { FIREBASE_DB,getDocs, doc, collection } from "../firebase";
 const HomeScreen = () => {
+  const navigation = useNavigation();
   const widthAndHeight = 250;
   const [value, setValue] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -20,12 +23,44 @@ const HomeScreen = () => {
   const [fontsLoaded] = useFonts({
     volkor: require("../assets/fonts/Vollkorn/static/Vollkorn-Regular.ttf"),
   });
-  
+  const [list,setList] = useState([])
+  const getData = async () => {
+    const querySnapshot = await getDocs(collection(FIREBASE_DB, "rutines"));
+    querySnapshot.forEach((doc) => {
+      
+      console.log(doc.id, doc.data());
+      
+      /* console.log(list);
+      console.warn(list) */
+    });
+  };
+  useEffect(() =>{
+    getData();
+  }, [])
   if (!fontsLoaded) return null;
   return (
     <SafeAreaView style={styles.scrollContainer}>
       <ScrollView>
-        
+        <View style={styles.container}>
+        <Text
+            style={[styles.title, { marginTop: 55 }, { alignSelf: "center" },{color:"white"}]}
+          >
+            ¡Bienvenido!
+          </Text>
+            
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Rutines")}
+              style={[styles.button]}
+            >
+              <Text style={[styles.buttonText]}> Rutinas </Text>
+            </TouchableOpacity>
+            {/* <TouchableOpacity
+              onPress={() => navigation.navigate("Classes")}
+              style={[styles.button]}
+            >
+              <Text style={[styles.buttonText]}> Classes </Text>
+            </TouchableOpacity> */}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -41,6 +76,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    alignContent: "center"
   },
   title: {
     fontSize: 24,
